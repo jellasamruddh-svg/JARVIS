@@ -1,39 +1,3 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<meta name="theme-color" content="#020b14">
-<meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="JARVIS">
-<meta name="description" content="Just A Rather Very Intelligent System">
-<link rel="manifest" href="manifest.json">
-<title>J.A.R.V.I.S.</title>
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Rajdhani:wght@300;400;500;600&display=swap" rel="stylesheet">
-<style>
-  :root {
-    --cyan: #00e5ff;
-    --cyan-dim: rgba(0,229,255,0.5);
-    --bg: #020b14;
-    --panel: rgba(0,20,35,0.85);
-    --border: rgba(0,229,255,0.2);
-    --safe-top: env(safe-area-inset-top, 0px);
-    --safe-bottom: env(safe-area-inset-bottom, 0px);
-  }
-  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-  html, body { height: 100%; overflow: hidden; overscroll-behavior: none; }
-  body {
-    background: var(--bg); color: var(--cyan);
-    font-family: 'Rajdhani', sans-serif;
-    display: flex; flex-direction: column;
-    position: fixed; inset: 0;
-    padding-top: var(--safe-top); padding-bottom: var(--safe-bottom);
-    user-select: none;
-  }
-  body::before {
-    content: ''; position: fixed; inset: 0;
     background-image: linear-gradient(rgba(0,229,255,0.025) 1px, transparent 1px), linear-gradient(90deg, rgba(0,229,255,0.025) 1px, transparent 1px);
     background-size: 36px 36px; pointer-events: none; z-index: 0;
   }
