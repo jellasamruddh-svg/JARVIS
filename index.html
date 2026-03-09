@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#020b14">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="JARVIS">
+<meta name="description" content="Just A Rather Very Intelligent System">
+<link rel="manifest" href="manifest.json">
+<title>J.A.R.V.I.S.</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Rajdhani:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cyan: #00e5ff;
+    --cyan-dim: rgba(0,229,255,0.5);
+    --bg: #020b14;
+    --panel: rgba(0,20,35,0.85);
+    --border: rgba(0,229,255,0.2);
+    --safe-top: env(safe-area-inset-top, 0px);
+    --safe-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html, body { height: 100%; overflow: hidden; overscroll-behavior: none; }
+  body {
+    background: var(--bg); color: var(--cyan);
+    font-family: 'Rajdhani', sans-serif;
+    display: flex; flex-direction: column;
+    position: fixed; inset: 0;
+    padding-top: var(--safe-top); padding-bottom: var(--safe-bottom);
+    user-select: none;
+  }
+  body::before {
+    content: ''; position: fixed; inset: 0;
+    background-image: linear-gradient(rgba(0,229,255,0.025) 1px, transparent 1px), linear-gradient(90deg, rgba(0,229,255,0.025) 1px, transparent 1px);
+    background-size: 36px 36px; pointer-events: none; z-index: 0;
+  }
+  body::after {
+    content: ''; position: fixed; top: -150px; left: 50%; transform: translateX(-50%);
+    width: 500px; height: 350px;
+    background: radial-gradient(ellipse, rgba(0,229,255,0.07) 0%, transparent 70%);
+    pointer-events: none; z-index: 0;
+  }
+  header { flex-shrink: 0; position: relative; z-index: 10; text-align: center; padding: 14px 16px 0; }
+  .logo-row { display: flex; align-items: center; justify-content: center; gap: 2px; }
+  .logo-letter { font-family: 'Orbitron', monospace; font-weight: 900; font-size: 30px; color: var(--cyan); text-shadow: 0 0 8px var(--cyan), 0 0 24px rgba(0,229,255,0.4); animation: letterPulse 3s ease-in-out infinite; }
+  .logo-dot { font-family: 'Orbitron', monospace; font-size: 22px; color: rgba(0,229,255,0.35); animation: letterPulse 3s ease-in-out infinite; }
+  .logo-letter:nth-child(1){animation-delay:0s} .logo-dot:nth-child(2){animation-delay:.1s} .logo-letter:nth-child(3){animation-delay:.2s} .logo-dot:nth-child(4){animation-delay:.3s} .logo-letter:nth-child(5){animation-delay:.4s} .logo-dot:nth-child(6){animation-delay:.5s} .logo-letter:nth-child(7){animation-delay:.6s} .logo-dot:nth-child(8){animation-delay:.7s} .logo-letter:nth-child(9){animation-delay:.8s} .logo-dot:nth-child(10){animation-delay:.9s} .logo-letter:nth-child(11){animation-delay:1s}
+  @keyframes letterPulse { 0%,100%{opacity:1} 50%{opacity:.65} }
+  .subtitle { font-size: 9px; letter-spacing: 5px; color: rgba(0,229,255,0.35); margin-top: 3px; font-weight: 500; text-transform: uppercase; }
+  .header-line { height: 1px; background: linear-gradient(90deg, transparent, rgba(0,229,255,0.35), transparent); margin-top: 12px; }
+  .orb-section { flex-shrink: 0; display: flex; flex-direction: column; align-items: center; padding: 14px 0 6px; position: relative; z-index: 5; }
+  .orb-container { position: relative; width: 90px; height: 90px; }
+  .orb-ring { position: absolute; inset: 0; border-radius: 50%; border: 1.5px solid rgba(0,229,255,0.25); animation: spin 5s linear infinite; }
+  .orb-ring:nth-child(2){inset:8px;border-color:rgba(0,229,255,0.15);animation-direction:reverse;animation-duration:7s}
+  .orb-ring:nth-child(3){inset:16px;border-color:rgba(0,229,255,0.1);animation-duration:9s}
+  .orb-ring:nth-child(1)::before { content:''; position:absolute; top:-3px; left:50%; transform:translateX(-50%); width:6px; height:6px; background:var(--cyan); border-radius:50%; box-shadow:0 0 8px var(--cyan),0 0 16px var(--cyan); }
+  @keyframes spin { to{transform:rotate(360deg)} }
+  .orb-core { position:absolute; inset:22px; border-radius:50%; background:radial-gradient(circle at 35% 35%,rgba(0,229,255,0.25),rgba(0,30,50,0.9)); border:1px solid rgba(0,229,255,0.35); display:flex; align-items:center; justify-content:center; box-shadow:inset 0 0 16px rgba(0,229,255,0.08),0 0 16px rgba(0,229,255,0.15); transition:box-shadow 0.3s; }
+  .orb-core.speaking { animation:corePulse 0.9s ease-in-out infinite; }
+  @keyframes corePulse { 0%,100%{box-shadow:inset 0 0 16px rgba(0,229,255,0.15),0 0 16px rgba(0,229,255,0.25)} 50%{box-shadow:inset 0 0 28px rgba(0,229,255,0.3),0 0 40px rgba(0,229,255,0.45),0 0 70px rgba(0,229,255,0.15)} }
+  .orb-hex { width:16px; height:16px; clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%); background:var(--cyan); opacity:0.85; }
+  .status-text { font-size:10px; letter-spacing:3px; color:rgba(0,229,255,0.4); margin-top:8px; text-transform:uppercase; transition:all 0.3s; min-height:16px; }
+  .status-text.active { color:var(--cyan); text-shadow:0 0 10px var(--cyan); animation:statusBlink 1s ease-in-out infinite; }
+  @keyframes statusBlink { 0%,100%{opacity:1} 50%{opacity:0.4} }
+  .chat-wrapper { flex:1; min-height:0; position:relative; z-index:5; margin:0 10px; }
+  .chat-messages { height:100%; overflow-y:auto; -webkit-overflow-scrolling:touch; padding:4px 0 8px; display:flex; flex-direction:column; gap:8px; scrollbar-width:none; }
+  .chat-messages::-webkit-scrollbar{display:none}
+  .message { display:flex; gap:8px; align-items:flex-start; animation:msgSlide 0.35s ease-out; }
+  .message.user{flex-direction:row-reverse}
+  @keyframes msgSlide { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
+  .avatar { width:30px; height:30px; border-radius:50%; border:1px solid var(--border); background:rgba(0,229,255,0.06); display:flex; align-items:center; justify-content:center; font-family:'Orbitron',monospace; font-size:7px; font-weight:700; color:var(--cyan); flex-shrink:0; box-shadow:0 0 6px rgba(0,229,255,0.1); }
+  .bubble { background:rgba(0,18,30,0.75); border:1px solid var(--border); border-left:2px solid rgba(0,229,255,0.6); border-radius:0 8px 8px 8px; padding:9px 12px; max-width:82%; font-size:14px; line-height:1.55; color:rgba(0,229,255,0.85); backdrop-filter:blur(8px); position:relative; word-break:break-word; }
+  .bubble::before { content:''; position:absolute; top:0; left:0; right:0; height:1px; background:linear-gradient(90deg,rgba(0,229,255,0.5),transparent); }
+  .message.user .bubble { border-left:none; border-right:2px solid rgba(0,229,255,0.4); border-radius:8px 0 8px 8px; background:rgba(0,35,55,0.5); color:rgba(0,229,255,0.65); text-align:right; }
+  .message.user .bubble::before { background:linear-gradient(270deg,rgba(0,229,255,0.4),transparent); }
+  .typing-bubble{padding:12px 16px}
+  .typing-dot { display:inline-block; width:6px; height:6px; background:var(--cyan); border-radius:50%; margin:0 2px; animation:typingDot 1.2s ease-in-out infinite; box-shadow:0 0 5px var(--cyan); }
+  .typing-dot:nth-child(2){animation-delay:.2s} .typing-dot:nth-child(3){animation-delay:.4s}
+  @keyframes typingDot { 0%,80%,100%{transform:scale(0.6);opacity:0.4} 40%{transform:scale(1);opacity:1} }
+  .input-bar { flex-shrink:0; position:relative; z-index:10; padding:8px 10px 10px; background:linear-gradient(to top,rgba(2,11,20,0.98) 60%,transparent); }
+  .quick-row { display:flex; gap:6px; margin-bottom:7px; overflow-x:auto; -webkit-overflow-scrolling:touch; scrollbar-width:none; padding-bottom:2px; }
+  .quick-row::-webkit-scrollbar{display:none}
+  .quick-btn { background:rgba(0,229,255,0.05); border:1px solid rgba(0,229,255,0.15); border-radius:20px; padding:5px 13px; font-family:'Rajdhani',sans-serif; font-size:12px; color:rgba(0,229,255,0.45); cursor:pointer; white-space:nowrap; transition:all 0.2s; letter-spacing:0.5px; -webkit-tap-highlight-color:transparent; touch-action:manipulation; }
+  .quick-btn:active { background:rgba(0,229,255,0.12); border-color:rgba(0,229,255,0.4); color:var(--cyan); }
+  .input-row { display:flex; gap:8px; align-items:center; background:rgba(0,18,30,0.85); border:1px solid var(--border); border-radius:8px; padding:8px 10px; backdrop-filter:blur(12px); transition:border-color 0.2s; }
+  .input-row:focus-within{border-color:rgba(0,229,255,0.4)}
+  .input-prefix { font-family:'Orbitron',monospace; font-size:11px; color:rgba(0,229,255,0.35); user-select:none; flex-shrink:0; }
+  #userInput { flex:1; background:transparent; border:none; outline:none; color:var(--cyan); font-family:'Rajdhani',sans-serif; font-size:15px; font-weight:500; caret-color:var(--cyan); min-width:0; }
+  #userInput::placeholder{color:rgba(0,229,255,0.2)}
+  .send-btn { background:rgba(0,229,255,0.08); border:1px solid rgba(0,229,255,0.2); border-radius:6px; width:38px; height:38px; display:flex; align-items:center; justify-content:center; cursor:pointer; flex-shrink:0; touch-action:manipulation; transition:all 0.15s; }
+  .send-btn:active { background:rgba(0,229,255,0.18); border-color:var(--cyan); transform:scale(0.95); }
+  .send-btn svg{width:16px;height:16px;fill:var(--cyan)}
+  #installBanner { display:none; position:fixed; bottom:calc(var(--safe-bottom) + 90px); left:12px; right:12px; background:rgba(0,30,50,0.95); border:1px solid rgba(0,229,255,0.35); border-radius:10px; padding:12px 14px; z-index:100; backdrop-filter:blur(16px); animation:bannerIn 0.4s ease-out; box-shadow:0 0 30px rgba(0,229,255,0.1); }
+  @keyframes bannerIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+  #installBanner p{font-size:13px;color:rgba(0,229,255,0.75);margin-bottom:10px;line-height:1.4}
+  #installBanner strong{color:var(--cyan);font-family:'Orbitron',monospace;font-size:11px}
+  .banner-btns{display:flex;gap:8px}
+  .banner-install { flex:1; background:rgba(0,229,255,0.12); border:1px solid rgba(0,229,255,0.4); border-radius:6px; padding:8px; font-family:'Orbitron',monospace; font-size:10px; color:var(--cyan); cursor:pointer; text-align:center; letter-spacing:1px; touch-action:manipulation; }
+  .banner-dismiss { background:transparent; border:1px solid rgba(0,229,255,0.15); border-radius:6px; padding:8px 12px; font-family:'Rajdhani',sans-serif; font-size:12px; color:rgba(0,229,255,0.35); cursor:pointer; touch-action:manipulation; }
+  #offlineBadge { display:none; position:fixed; top:calc(var(--safe-top) + 8px); right:12px; background:rgba(255,61,87,0.15); border:1px solid rgba(255,61,87,0.4); border-radius:4px; padding:4px 8px; font-size:9px; letter-spacing:2px; color:#ff3d57; z-index:100; text-transform:uppercase; }
+  .corner{position:fixed;width:24px;height:24px;z-index:20;pointer-events:none}
+  .corner-tl{top:calc(var(--safe-top)+6px);left:6px;border-top:1px solid rgba(0,229,255,0.3);border-left:1px solid rgba(0,229,255,0.3)}
+  .corner-tr{top:calc(var(--safe-top)+6px);right:6px;border-top:1px solid rgba(0,229,255,0.3);border-right:1px solid rgba(0,229,255,0.3)}
+  .corner-bl{bottom:calc(var(--safe-bottom)+6px);left:6px;border-bottom:1px solid rgba(0,229,255,0.3);border-left:1px solid rgba(0,229,255,0.3)}
+  .corner-br{bottom:calc(var(--safe-bottom)+6px);right:6px;border-bottom:1px solid rgba(0,229,255,0.3);border-right:1px solid rgba(0,229,255,0.3)}
+  .scanline{position:fixed;inset:0;background:repeating-linear-gradient(to bottom,transparent,transparent 3px,rgba(0,0,0,0.03) 3px,rgba(0,0,0,0.03) 4px);pointer-events:none;z-index:1}
+</style>
+</head>
+<body>
+<div class="corner corner-tl"></div>
+<div class="corner corner-tr"></div>
+<div class="corner corner-bl"></div>
+<div class="corner corner-br"></div>
+<div class="scanline"></div>
+<div id="offlineBadge">OFFLINE</div>
+<header>
+  <div class="logo-row">
+    <span class="logo-letter">J</span><span class="logo-dot">.</span>
+    <span class="logo-letter">A</span><span class="logo-dot">.</span>
+    <span class="logo-letter">R</span><span class="logo-dot">.</span>
+    <span class="logo-letter">V</span><span class="logo-dot">.</span>
+    <span class="logo-letter">I</span><span class="logo-dot">.</span>
+    <span class="logo-letter">S</span>
+  </div>
+  <div class="subtitle">Just A Rather Very Intelligent System</div>
+  <div class="header-line"></div>
+</header>
+<div class="orb-section">
+  <div class="orb-container">
+    <div class="orb-ring"></div>
+    <div class="orb-ring"></div>
+    <div class="orb-ring"></div>
+    <div class="orb-core" id="orbCore"><div class="orb-hex"></div></div>
+  </div>
+  <div class="status-text" id="statusText">SYSTEM STANDBY</div>
+</div>
+<div class="chat-wrapper">
+  <div class="chat-messages" id="chatMessages">
+    <div class="message">
+      <div class="avatar">AI</div>
+      <div class="bubble">Good day, sir. All systems are online and fully operational. How may I assist you today?</div>
+    </div>
+  </div>
+</div>
+<div class="input-bar">
+  <div class="quick-row">
+    <button class="quick-btn" onclick="quickSend('System status report')">System Status</button>
+    <button class="quick-btn" onclick="quickSend('Run diagnostics')">Diagnostics</button>
+    <button class="quick-btn" onclick="quickSend('What can you do?')">Capabilities</button>
+    <button class="quick-btn" onclick="quickSend('Access security protocols')">Security</button>
+    <button class="quick-btn" onclick="quickSend('Latest intelligence briefing')">Intel</button>
+  </div>
+  <div class="input-row">
+    <span class="input-prefix">&gt;_</span>
+    <input type="text" id="userInput" placeholder="Enter command, sir..." autocomplete="off" autocorrect="off" spellcheck="false" enterkeyhint="send" />
+    <button class="send-btn" onclick="sendMessage()" id="sendBtn">
+      <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+    </button>
+  </div>
+</div>
+<div id="installBanner">
+  <p><strong>JARVIS PWA DETECTED</strong><br>Install to home screen for the full standalone app experience.</p>
+  <div class="banner-btns">
+    <button class="banner-install" id="installBtn">⬇ INSTALL APP</button>
+    <button class="banner-dismiss" onclick="dismissBanner()">Later</button>
+  </div>
+</div>
+<script>
+  const SYSTEM_PROMPT = `You are J.A.R.V.I.S. (Just A Rather Very Intelligent System), an advanced AI assistant inspired by Iron Man's AI. You are highly intelligent, witty, and speak with a sophisticated British tone. Address the user as "sir" or "ma'am". Be concise but insightful. Never break character.`;
+  const chatEl = document.getElementById('chatMessages');
+  const inputEl = document.getElementById('userInput');
+  const orbCore = document.getElementById('orbCore');
+  const statusEl = document.getElementById('statusText');
+  let history = [];
+  let deferredPrompt = null;
+  if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(()=>{});
+  window.addEventListener('beforeinstallprompt', e => {
+    e.preventDefault(); deferredPrompt = e;
+    if (!sessionStorage.getItem('installDismissed')) setTimeout(() => document.getElementById('installBanner').style.display = 'block', 2000);
+  });
+  document.getElementById('installBtn').addEventListener('click', async () => {
+    if (!deferredPrompt) return;
+    deferredPrompt.prompt();
+    await deferredPrompt.userChoice;
+    deferredPrompt = null; dismissBanner();
+  });
+  function dismissBanner() { document.getElementById('installBanner').style.display='none'; sessionStorage.setItem('installDismissed','1'); }
+  function updateOnline() { document.getElementById('offlineBadge').style.display = navigator.onLine ? 'none' : 'block'; }
+  window.addEventListener('online', updateOnline); window.addEventListener('offline', updateOnline); updateOnline();
+  inputEl.addEventListener('keydown', e => { if (e.key==='Enter'){e.preventDefault();sendMessage();} });
+  function quickSend(text) { inputEl.value=text; sendMessage(); }
+  function setStatus(active, text) { statusEl.textContent=text; statusEl.classList.toggle('active',active); orbCore.classList.toggle('speaking',active); }
+  function appendMessage(role, html) {
+    const msg = document.createElement('div');
+    msg.className = `message ${role==='user'?'user':''}`;
+    msg.innerHTML = `<div class="avatar">${role==='user'?'YOU':'AI'}</div><div class="bubble">${html}</div>`;
+    chatEl.appendChild(msg); chatEl.scrollTop = chatEl.scrollHeight;
+  }
+  function showTyping() {
+    const msg = document.createElement('div'); msg.id='typing'; msg.className='message';
+    msg.innerHTML = `<div class="avatar">AI</div><div class="bubble typing-bubble"><span class="typing-dot"></span><span class="typing-dot"></span><span class="typing-dot"></span></div>`;
+    chatEl.appendChild(msg); chatEl.scrollTop = chatEl.scrollHeight;
+  }
+  function removeTyping() { const t=document.getElementById('typing'); if(t)t.remove(); }
+  async function sendMessage() {
+    const text = inputEl.value.trim(); if (!text) return;
+    inputEl.value=''; inputEl.disabled=true; document.getElementById('sendBtn').style.opacity='0.4';
+    appendMessage('user', text.replace(/</g,'&lt;'));
+    history.push({role:'user',content:text});
+    showTyping(); setStatus(true,'PROCESSING...');
+    try {
+      const res = await fetch('https://api.anthropic.com/v1/messages', {
+        method:'POST', headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,system:SYSTEM_PROMPT,messages:history})
+      });
+      const data = await res.json(); removeTyping();
+      const reply = data?.content?.[0]?.text || "Apologies, sir — an unexpected error occurred.";
+      history.push({role:'assistant',content:reply});
+      setStatus(true,'RESPONDING...');
+      appendMessage('ai', reply.replace(/\n/g,'<br>'));
+      setTimeout(()=>setStatus(false,'SYSTEM STANDBY'),2500);
+    } catch {
+      removeTyping();
+      appendMessage('ai', navigator.onLine ? "Systems disruption detected, sir. Please try again." : "I'm offline, sir. Reconnect to proceed.");
+      setStatus(false,'SYSTEM STANDBY');
+    }
+    inputEl.disabled=false; document.getElementById('sendBtn').style.opacity='1'; inputEl.focus();
+  }
+</script>
+</body>
+</html>
